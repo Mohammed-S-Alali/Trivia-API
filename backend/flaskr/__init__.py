@@ -317,5 +317,3 @@ def create_app(test_config=None):
       }), 400
 
   return app
-
-    
