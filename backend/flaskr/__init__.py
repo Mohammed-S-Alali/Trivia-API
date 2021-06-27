@@ -45,6 +45,9 @@ def create_app(test_config=None):
   '''
   @app.route('/categories')
   def get_categories():
+    '''
+    This function return categories of question in dictionary format.
+    '''
     categories = Category.query.order_by(Category.id).all()
     formatted_categories = {category.id:category.type for category in categories}
 
@@ -67,6 +70,9 @@ def create_app(test_config=None):
   '''
   @app.route('/questions')
   def retrieve_questions():
+    '''
+    This function returns the questions in paginated format. 
+    '''
     selection = Question.query.order_by(Question.id).all()
     current_questions = paginate_questions(request, selection)
     categories = Category.query.all()
@@ -92,6 +98,9 @@ def create_app(test_config=None):
   '''
   @app.route('/questions/<int:question_id>', methods=['DELETE'])
   def delete_question(question_id):
+    '''
+    This function deletes the selected question by id, and returns the id of deleted question.
+    '''
     try:
       question = Question.query.filter(Question.id == question_id).one_or_none()
 
@@ -124,6 +133,11 @@ def create_app(test_config=None):
   '''
   @app.route('/questions', methods=['POST'])
   def create_question():
+    '''
+    This function creates question by using a data in json format via POST method.
+    The fields of question are question, answer, category and difficulty.
+    '''
+
     body = request.get_json()
 
     try:
@@ -164,6 +178,11 @@ def create_app(test_config=None):
   '''
   @app.route('/searchquestion', methods=['POST'])
   def search_question():
+    '''
+    This function searchs a question by using a data in json format via POST method.
+    The field of search is searchTerm to match it on question part.
+
+    '''
     body = request.get_json()
 
     search = body.get('searchTerm', None)
@@ -198,6 +217,9 @@ def create_app(test_config=None):
   '''
   @app.route("/categories/<int:category_id>/questions")
   def get_questions_by_category(category_id):
+    '''
+    This function returns the paginated questions in certain category by define id of category.
+    '''
     try:
       category = Category.query.filter(Category.id == category_id).one_or_none()
       
@@ -235,6 +257,10 @@ def create_app(test_config=None):
   '''
   @app.route("/quizzes", methods=['POST'])
   def play_quiz():
+    '''
+    This function return new question to play a quiz without duplication by using a data in json format via POST method.
+    The data of quiz are category of quiz and previous questions.
+    '''
     body = request.get_json()
     
     try:
